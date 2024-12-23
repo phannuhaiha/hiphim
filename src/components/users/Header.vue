@@ -2,7 +2,7 @@
   <div class="relative">
     <!-- Header -->
     <div :class="isDarkMode ? 'dark' : ''" 
-    class="flex fixed z-50 w-screen justify-between items-center p-2 bg-darkCustom dark:bg-gray-500 text-black dark:text-white">
+    class="flex fixed z-50 w-screen justify-between items-center p-2 bg-darkCustom dark:bg-gray-500 text-black dark:text-white shadow-bottom">
       <!-- Góc trái: Menu Icon và Logo -->
       <div class="flex items-center space-x-4">
         <!-- Menu Icon (Hamburger) -->
@@ -188,5 +188,8 @@ export default {
 }
 .dark .icon{
   color: #cac3c3;
+}
+.shadow-bottom {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Đổ bóng phía dưới */
 }
 </style>

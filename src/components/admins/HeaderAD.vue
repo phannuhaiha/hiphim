@@ -1,6 +1,6 @@
 <template>
   <div 
-    :class="{'w-[calc(100%-18rem)]': isNavOpen, 'w-[calc(100%-4rem)]': !isNavOpen}" 
+    :class="{'w-[calc(100%-14rem)]': isNavOpen, 'w-[calc(100%-5rem)]': !isNavOpen}" 
     class="flex fixed z-50 justify-between items-center p-2  text-black transition-all duration-300 shadow-bottom"
   >
     <!-- Góc trái: Menu Icon và tìm kiếm -->
@@ -84,6 +84,9 @@ export default {
   width: 30px;
   height: 3px;
   background-color: black;
+}
+.dark .menu{
+  background-color: #cac3c3;
 }
 .icon {
   font-family: 'Boxicons';

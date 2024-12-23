@@ -1,26 +1,31 @@
 <template>
-  <div :class="{'dark': isDarkMode}" class="min-h-screen flex flex-col">
+  <div :class="{'dark': isDarkMode}" class="min-h-screen flex flex-row">
     <!-- Container chính -->
     <div class="flex flex-row flex-grow transition-all duration-300 dark:bg-gray-800">
       <!-- Nav -->
       <div 
-        :class="{'w-72': isNavOpen, 'w-16': !isNavOpen}" 
+        :class="{'w-56': isNavOpen, 'w-20': !isNavOpen}" 
         class="h-full bg-gray-300 dark:bg-gray-900 transition-all duration-300"
       >
         <Nav :isOpen="isNavOpen" :isDarkMode="isDarkMode" class="dark:bg-gray-800" />
       </div>
-      <!-- Header và Nội dung -->
-      <div :class="{'left-72': isNavOpen, 'left-16': !isNavOpen}" class="flex-row transition-all duration-300">
-        <!-- Header -->
+      <!-- Nội dung chính bên phải Nav -->
+    <div class="flex flex-col flex-grow">
+      <!-- Header -->
+      <div>
         <Header 
           @toggle-menu="toggleNav" 
           @toggle-theme="toggleTheme" 
           :isDarkMode="isDarkMode"
           :isNavOpen="isNavOpen"
         />
-        <!-- Nội dung -->
-        <RouterView />
       </div>
+
+      <!-- Nội dung chính -->
+      <div class="flex-grow pt-16 bg-white dark:bg-gray-900 transition-all duration-300">
+        <RouterView :isNavOpen="isNavOpen" :isDarkMode="isDarkMode"/>
+      </div>
+    </div>
     </div>
   </div>
 </template>
