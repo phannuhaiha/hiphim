@@ -1,36 +1,62 @@
 <template>
-  <div :class="[isOpen ? 'w-56' : 'w-20', isDarkMode ? 'bg-gray-800' : 'bg-slate-100']"
-  class="fixed text-black min-h-screen transition-all duration-300 ease-in-out p-3 shadow-right">
-    <div class="flex flex-col space-y-5 ">
+  <div :class="[isOpen ? 'w-48' : 'w-20', isDarkMode ? 'bg-gray-800' : 'bg-slate-100']"
+  class="fixed z-50 text-black min-h-screen transition-all duration-300 ease-in-out p-3 shadow-right">
+    <div class="flex flex-col space-y-4 ">
          <!-- logo -->
-        <div :class="[isOpen ? 'flex' : 'hidden']" class="flex w-auto bg-auto  items-center justify-center">
-           <div class="flex bg-auto items-center justify-center py-2 text-white text-4xl font-bold" style="width: 120px; height: 70px;">
-              <img src="../icons/Logo.png" class="flex w-full h-full">
+          
+            <div :class="[isOpen ? 'flex' : 'hidden']" class="flex w-auto bg-auto  items-center justify-center">
+              <router-link to="/admin/earning">
+                <div class="flex bg-auto items-center justify-center py-2 text-white text-4xl font-bold" style="width: 150px; height: 70px;">
+                 <img src="../icons/NewLogo.png" class="flex w-full h-full">
+              </div>
+              </router-link>
+              
            </div>
-        </div>
-       
+          
         <!-- list choose -->
-        <div class="w-100% flex flex-col space-y-5 text-black">
-            <!-- quan lys noi dung -->
-            <button :class="isOpen ? 'flex-row space-x-1' : 'flex-col space-y-1'" class="navmenu">
-                <i class="bx bx-book-open icon "></i>
-                <span :class="isOpen ? '':'text-xs'"  class="content ">Quản lý nội dung</span>
+        <div class="w-100% flex flex-col space-y-5 text-black items-center">
+           <!-- Quản lý doanh thu -->
+           <router-link to="/admin/earning">
+              <button :class="isOpen ? 'flex-row space-x-2' : 'flex-col space-y-1'" class="navmenu ">
+              <i class="bx bx-home icon"></i>
+              <span :class="isOpen ? '':'text-xs'" class="content">Trang chủ</span>
             </button>
+             </router-link>
+
+          <!-- quan lys noi dung -->
+          <router-link to="/admin/video">
+            <button :class="isOpen ? 'flex-row space-x-2' : 'flex-col space-y-1'" class="navmenu">
+                <i class="bx bx-book-open icon"></i>
+                <span :class="isOpen ? '':'text-xs'"  class="content  ">Nội dung</span>
+            </button>
+          </router-link>
+            
+            
             <!-- quan ly tai khoan -->
-            <button :class="isOpen ? 'flex-row space-x-1' : 'flex-col space-y-1'" class="navmenu ">
+             <router-link to="/admin/account">
+              <button :class="isOpen ? 'flex-row space-x-2' : 'flex-col space-y-1'" class="navmenu ">
               <i class="bx bx-user-circle icon"></i>
-              <span :class="isOpen ? '':'text-xs'" class="content">Quản lý tài khoản</span>
+              <span :class="isOpen ? '':'text-xs'" class="content">Tài khoản</span>
             </button>
-            <!-- Quản lý doanh thu -->
-            <button :class="isOpen ? 'flex-row space-x-1' : 'flex-col space-y-1'" class="navmenu ">
-              <i class="bx bx-chart icon"></i>
-              <span :class="isOpen ? '':'text-xs'" class="content">Quản lý doanh thu</span>
-            </button>
+             </router-link>
+
             <!-- Quản lý quảng cáo-->
-            <button :class="isOpen ? 'flex-row space-x-1' : 'flex-col space-y-1'" class="navmenu ">
+             <router-link>
+              <button :class="isOpen ? 'flex-row space-x-2' : 'flex-col space-y-1'" class="navmenu ">
               <i class="bx bx-tv icon"></i>
-              <span :class="isOpen ? '':'text-xs'" class="content">Quản lý quảng cáo</span>
+              <span :class="isOpen ? '':'text-xs'" class="content ">Quảng cáo</span>
             </button>
+             </router-link>
+
+             <!-- Thoong bao -->
+              <router-link>
+                <button :class="isOpen ? 'flex-row space-x-2' : 'flex-col space-y-1'" class="navmenu ">
+                <i class="bx bx-bell icon "></i>
+                <span :class="isOpen ? '':'text-xs'" class="content">Thông báo</span>
+              </button>
+              </router-link>
+              
+            
 
         </div>
 
@@ -47,11 +73,11 @@ export default {
     props: {
       isOpen: {
         type: Boolean,
-        default: false, // Thanh nav bắt đầu ở trạng thái đóng
+        default: false, 
       },
       isDarkMode: {
         type: Boolean,
-        default: false, // Trạng thái Dark Mode
+        default: false, 
       }
     },
     
@@ -71,12 +97,15 @@ export default {
 }
 .content {
   height: 1.5rem; 
-  white-space: nowrap; /* Không xuống dòng */
-  overflow: hidden; /* Ẩn phần nội dung vượt quá khung */
-  text-overflow: ellipsis; /* Thêm dấu '...'  */
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
   font-family: 'Roboto';
-  display: inline-block; /* Đảm bảo rút gọn hoạt động chính xác */
+  display: inline-block; 
   width: 100%; 
+}
+.content:hover{
+  text-decoration: underline;
 }
 .navmenu{
   display: flex;
@@ -90,9 +119,7 @@ export default {
   transition: background-color 0.1s ease-in-out;
 }
 
-.navmenu:hover{
-  background-color: #969ca5;
-}
+
 .dark .navmenu{
   color: #ededed;
 }

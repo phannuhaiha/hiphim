@@ -1,91 +1,131 @@
-<template>
-  <div class="background">
-    <h1 class="bg-auto text-3xl font-bold font-roboto text-black dark:text-white">KÊNH ĐĂNG KÍ</h1>
-    
-    <!-- Nội dung chính -->
-    <div class="flex flex-col bg-auto m-5 dark:bg-customLight rounded-lg">
-      <!-- AVT + Tên Kênh -->
-      <div class="flex justify-between text-black dark:text-white">
-        <button class="flex flex-row">
-          <div class="flex w-10 h-10 rounded-full items-center mr-2 bg-gray-400"></div>
-          <!-- tên kênh -->
-          <div class="text-lg font-roboto font-medium">hihi</div>
-        </button>
-        <button class="rounded-full border border-gray-300">
-          <span class="text-sm p-2 font-roboto"> Xem tất cả </span>
-        </button>
-      </div>
+<template> 
+  <div class="background bg-white dark:bg-gray-900">
+    <div class="sm:block hidden">
+      <div class="bg-auto flex flex-col space-y-2 sm:p-3">
+      <h1 class="bg-auto ml-4 text-lg sm:text-3xl font-bold font-roboto text-black dark:text-white">
+      KÊNH ĐĂNG KÍ
+    </h1>
+    <!-- Kênh 1 -->
+    <ChannelCarousel :videos="videosChannel1" channelName="Kênh đăng ký 1" />
+    <!-- Kênh 2 -->
+    <ChannelCarousel :videos="videosChannel2" channelName="Kênh đăng ký 2" />
+    <!-- Kênh 3 -->
+    <ChannelCarousel :videos="videosChannel3" channelName="Kênh đăng ký 3" />
+    </div>
+    </div>
 
-      <!-- Video chính -->
-      <div class="flex flex-row items-center w-full min-h-full bg-gray-200 dark:bg-customLight rounded-xl mt-2 space-x-2 overflow-x-auto">
-        <!-- Video List -->
-        <div class="grid grid-cols-4 gap-4">
-          <video-card
-            v-for="(video, index) in videos"
-            :key="index"
-            :video="video"
-          />
+
+    <!-- Màn hình điện thoại -->
+    <div class="sm:hidden block "> 
+      <div class="flex flex-col space-y-3 ">
+        <!-- Chuỗi kênh đã đăng kính (chỉ avt) -->
+          <div><avt-group/></div>
+        <!-- Chuoi video  -->
+         <div class="flex flex-col space-y-3 w-full h-full px-4">
+          <!-- Video Card -->
+      <div
+        v-for="(video, index) in videos"
+        :key="index"
+        class="flex flex-col bg-auto items-center rounded-lg"
+      >
+        <!-- Video -->
+        <div class="relative w-full h-40">
+          <video
+            :src="video.src"
+            controls
+            class="w-full h-full object-cover rounded-lg"
+          ></video>
+        </div>
+
+        <div class="flex flex-row w-full mt-2">
+          <div class="w-10 h-10 rounded-full bg-slate-600 "></div>
+          <div class="flex flex-col px-2 w-[80%]">
+            <!-- Text Section -->
+        <div class="">
+          <p class="text-purple-600 font-bold text-sm line-clamp-2 overflow-hidden text-ellipsis">
+            {{ video.title }}
+          </p>
+        </div>
+
+        <!-- Views and Time -->
+        <div class="mt-2 text-gray-600 text-xs">
+          <span>{{ video.views }} lượt xem • {{ video.time }}</span>
+        </div>
+          </div>
+          <!-- icon 3 chaams docj -->
+           <div class="flex w-[10%] ">
+            <i class="bx bx-dots-vertical-rounded dark:text-white text-2xl"></i>
+           </div>
         </div>
         
-        <!-- Nút chuyển slide -->
-        <button
-          class="w-10 h-10 ml-auto flex-shrink-0 bg-gray-700 text-white p-2 rounded-full hover:bg-gray-800"
-          @click="nextSlide"
-        >
-          <i class="bx bx-chevron-right text-2xl"></i>
-        </button>
+      </div>
+         </div>
       </div>
     </div>
+    
+    
   </div>
 </template>
 
 <script>
-import VideoCard from '@/components/users/Videocard.vue'; // Import video card component
+import ChannelCarousel from "@/components/users/ChannelCarousel.vue";
+import AvtGroup from '@/components/users/AvtGroup.vue';
 
 export default {
   name: "Subscription",
   components: {
-    VideoCard, // Register the component
+    ChannelCarousel,
+    AvtGroup,
   },
   data() {
     return {
-      videos: [
+      videosChannel1: [
         { src: "video1.mp4", title: "Video 1", channel: "Kênh 1", views: "10K" },
-        { src: "video2.mp4", title: "Video 2", channel: "Kênh 2", views: "20K" },
-        { src: "video3.mp4", title: "Video 3", channel: "Kênh 3", views: "15K" },
-        { src: "video4.mp4", title: "Video 4", channel: "Kênh 4", views: "30K" },
-        { src: "video5.mp4", title: "Video 5", channel: "Kênh 5", views: "5K" },
-        { src: "video6.mp4", title: "Video 6", channel: "Kênh 6", views: "8K" },
+        { src: "video2.mp4", title: "Video 2", channel: "Kênh 1", views: "20K" },
+        { src: "video3.mp4", title: "Video 3", channel: "Kênh 1", views: "15K" },
+        { src: "video1.mp4", title: "Video 1", channel: "Kênh 1", views: "10K" },
+        { src: "video2.mp4", title: "Video 2", channel: "Kênh 1", views: "20K" },
+        { src: "video3.mp4", title: "Video 3", channel: "Kênh 1", views: "15K" },
+        { src: "video1.mp4", title: "Video 1", channel: "Kênh 1", views: "10K" },
+        { src: "video2.mp4", title: "Video 2", channel: "Kênh 1", views: "20K" },
+        { src: "video3.mp4", title: "Video 3", channel: "Kênh 1", views: "15K" },
+        
       ],
-      currentIndex: 0,
+      videosChannel2: [
+        { src: "video4.mp4", title: "Video 4", channel: "Kênh 2", views: "30K" },
+        { src: "video5.mp4", title: "Video 5", channel: "Kênh 2", views: "5K" },
+        { src: "video6.mp4", title: "Video 6", channel: "Kênh 2", views: "8K" },
+        { src: "video1.mp4", title: "Video 1", channel: "Kênh 1", views: "10K" },
+        { src: "video2.mp4", title: "Video 2", channel: "Kênh 1", views: "20K" },
+        { src: "video3.mp4", title: "Video 3", channel: "Kênh 1", views: "15K" },
+        
+      ],
+      videosChannel3: [
+        { src: "video4.mp4", title: "Video 4", channel: "Kênh 2", views: "30K" },
+        { src: "video5.mp4", title: "Video 5", channel: "Kênh 2", views: "5K" },
+        { src: "video6.mp4", title: "Video 6", channel: "Kênh 2", views: "8K" },
+        { src: "video1.mp4", title: "Video 1", channel: "Kênh 1", views: "10K" },
+        { src: "video2.mp4", title: "Video 2", channel: "Kênh 1", views: "20K" },
+        { src: "video3.mp4", title: "Video 3", channel: "Kênh 1", views: "15K" },
+        
+      ],
+      videos: [
+        {
+          src: "path-to-video1.mp4", title: "20 cụm từ Tiếng Anh thông dụng kèm theo ví dụ và giải thích chi tiết", views: "1", time: "49 phút trước",
+        },
+        {
+          src: "path-to-video1.mp4", title: "20 cụm từ Tiếng Anh thông dụng kèm theo ví dụ và giải thích chi tiết", views: "1", time: "49 phút trước",
+        },
+        {
+          src: "path-to-video1.mp4", title: "20 cụm từ Tiếng Anh thông dụng kèm theo ví dụ và giải thích chi tiết", views: "1", time: "49 phút trước",
+        }
+
+      ],
     };
-  },
-  computed: {
-    maxIndex() {
-      return Math.max(this.videos.length - 3, 0);
-    },
-  },
-  methods: {
-    nextSlide() {
-      if (this.currentIndex < this.maxIndex) {
-        this.currentIndex += 1;
-      }
-    },
-    prevSlide() {
-      if (this.currentIndex > 0) {
-        this.currentIndex -= 1;
-      }
-    },
   },
 };
 </script>
 
 <style>
-.background {
-  margin: 1.25rem;
-  background-color: #ffffff;
-}
-.dark .background {
-  background-color: #111827;
-}
+
 </style>

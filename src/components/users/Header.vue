@@ -1,66 +1,57 @@
 <template>
   <div class="relative">
     <!-- Header -->
-    <div :class="isDarkMode ? 'dark' : ''" 
-    class="flex fixed z-50 w-screen justify-between items-center p-2 bg-darkCustom dark:bg-gray-500 text-black dark:text-white shadow-bottom">
+    <div :class="isDarkMode ? 'dark' : ''"
+      class="flex fixed z-50 w-screen justify-between items-center transition-all duration-300  p-2 bg-white dark:bg-gray-500 text-black dark:text-white shadow-bottom space-x-2">
       <!-- Góc trái: Menu Icon và Logo -->
-      <div class="flex items-center space-x-4">
+      <div class="flex flex-row items-center space-x-1 md:space-x-4">
         <!-- Menu Icon (Hamburger) -->
-        <div @click="$emit('toggle-menu')" class="ml-4 space-y-1 cursor-pointer">
-          <div class="menu "></div>
-          <div class="menu"></div>
-          <div class="menu"></div>
+         <div class="sm:block hidden">
+          <div @click="$emit('toggle-menu')" class="flex flex-col w-1/5 h-full  ml-1 md:ml-4 gap-1 cursor-pointer ">
+          <i class="bx bx-menu text-xl sm:text-4xl"></i>
         </div>
+         </div>
+        
 
         <!-- Logo -->
         <router-link to="/product">
-          <div class="bg-auto rounded-full py-2 text-white text-4xl font-bold" style="width: 120px; height: 70px;">
-            <img src="../icons/Logo.png" class="flex w-full h-full">
+          <div class="sizelogo bg-auto rounded-full py-1 sm:py-2 text-white font-bold">
+            <img src="../icons/NewLogo.png" class="flex w-full h-full ">
           </div>
         </router-link>
       </div>
 
       <!-- Ở giữa: Thanh tìm kiếm -->
-      <div class="flex-grow max-w-md mx-auto">
+      <div class="flex flex-grow mx-auto items-center">
         <!-- Input tìm kiếm -->
-        <div class="flex items-center">
-          <input 
-            type="text" 
-            placeholder="Tìm kiếm" 
-            class="w-full py-2 px-4 border border-gray-500 rounded-full focus:outline-none"
-          />
+        <div class="flex w-full px-3 sm:px-10 lg:px-32 items-center justify-center space-x-1">
+          <input type="text" placeholder="Tìm kiếm"
+            class="w-full py-0 md:py-2 px-2 md:px-4 border border-gray-500 rounded-full dark:text-black focus:outline-none" />
           <!-- Nút tìm kiếm -->
-          <button class="p-2 w-12 h-12 items-center justify-center rounded-full hover:bg-white focus:outline-none">
-            <i class="bx bx-search icon  "></i>
+          <button
+            class="flex p-2 w-4 h-4 sm:w-9 sm:h-9 md:w-10 md:h-10 lg:w-12 lg:h-12 items-center justify-center rounded-full hover:bg-gray-300 dark:hover:bg-gray-800 focus:outline-none">
+            <i class="bx bx-search text-xl sm:text-3xl"></i>
           </button>
         </div>
       </div>
 
       <!-- Góc phải: Các biểu tượng khác -->
-      <div class="flex items-center space-x-4 pr-3">
+      <div class="clearfix gap-3 pr-3 hidden sm:block">
         <!-- Icon Video -->
-        <div class="relative" ref="videoMenu">
-          <button @click="toggleVideoMenu" class="w-10 h-10 rounded-full hover:bg-white">
-            <i class="bx bx-video icon "></i>
+        <div class="float-left relative sm:mr-3" ref="videoMenu">
+          <button @click.stop="toggleVideoMenu" class="w-10 h-10 rounded-full hover:bg-gray-300 dark:hover:bg-gray-800">
+            <i class="bx bx-video text-lg sm:text-3xl"></i>
           </button>
           <!-- Dropdown Menu -->
-          <div 
-            v-if="isVideoMenuOpen"
-            class="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-md z-50 font-roboto">
+          <div v-if="isVideoMenuOpen" @click.stop class="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-md z-50 font-roboto">
             <ul class="py-1">
-              <!-- Tùy chọn Video trực tuyến -->
               <li>
-                <button 
-                  @click="handleOnlineVideo"
-                  class="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                <button @click="handleOnlineVideo" class="block w-full text-left dark:text-black  px-4 py-2 hover:bg-gray-100">
                   Video trực tuyến
                 </button>
               </li>
-              <!-- Tùy chọn Tạo video -->
               <li>
-                <router-link 
-                  to="/uploadvideo"
-                  class="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                <router-link to="/uploadvideo" class="block w-full text-left px-4 dark:text-black py-2 hover:bg-gray-100">
                   Tạo video
                 </router-link>
               </li>
@@ -69,127 +60,221 @@
         </div>
 
         <!-- Icon Bell -->
-        <button class="w-10 h-10 rounded-full hover:bg-white">
-          <i class="bx bx-bell icon "></i>
-        </button>
-
-        <!-- Avatar tròn -->
-        <router-link to="/login">
-          <button class="w-10 h-10 rounded-full hover:bg-white">
-            <i class='bx bx-user-circle icon'></i>
+         <div class="float-left sm:mr-3">
+          <button class="w-10 h-10 rounded-full hover:bg-gray-300 dark:hover:bg-gray-800">
+            <i class="bx bx-bell text-lg sm:text-3xl"></i>
           </button>
-        </router-link>
+         </div>
+        
 
-        <!-- Nút chuyển đổi giữa chế độ tối và sáng -->
-        <button @click="toggleTheme" class=" w-10 h-10 rounded-full hover:bg-white">
-          <i v-if="isDarkMode" class="bx bx-sun icon "></i>
-          <i v-else class="bx bx-moon icon "></i>
+        <!-- Avatar -->
+        <div class="float-left relative sm:mr-3" >
+          <button @click="handleAvatarClick" class="w-10 h-10 rounded-full hover:bg-gray-300 dark:hover:bg-gray-800">
+            <img v-if="user && user.avatar" :src="user.avatar" alt="Avatar" class="w-full h-full rounded-full" />
+            <i v-else class="bx bx-user-circle  text-lg sm:text-3xl"></i>
+          </button>
+
+          <!-- Dropdown menu -->
+          <div v-if="user && isAvatarMenuOpen"  class="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-md z-50">
+            <ul class="py-2">
+              <li class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-300 dark:hover:bg-gray-800">
+                <div>{{ user.name }}</div>
+                <div class="text-xs text-gray-500">{{ user.email }}</div>
+              </li>
+              <hr class="my-1" />
+              <li class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                <router-link to="/mychannel">Kênh của bạn</router-link>
+              </li>
+              <li class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                <button @click="handleAccount">Tài khoản Google</button>
+              </li>
+              <li class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                <button @click="handleSwitchAccount">Chuyển đổi tài khoản</button>
+              </li>
+              <li class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                <button @click="logout">Đăng xuất</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Chuyển đổi giữa chế độ sáng và tối -->
+        <button @click="toggleTheme" class="float-left sm:mr-3 w-10 h-10 rounded-full hover:bg-gray-300 dark:hover:bg-gray-800">
+          <i v-if="isDarkMode" class="bx bx-sun text-lg sm:text-3xl"></i>
+          <i v-else class="bx bx-moon text-lg sm:text-3xl"></i>
         </button>
       </div>
     </div>
   </div>
 </template>
+
 <script>
-import 'boxicons/css/boxicons.min.css'; // Import Boxicons
-import { RouterLink } from 'vue-router';
+import { checkAuthStatus } from '@/config/auth';
+import axios from '@/config/axios.js';
+import csrf from '@/config/csrf';
+import 'boxicons/css/boxicons.min.css';
 
 export default {
   name: 'Header',
   data() {
     return {
-      isDarkMode: false, // Bắt đầu với chế độ sáng
-      isNavOpen: false,  // Trạng thái mở/đóng thanh nav
-      isVideoMenuOpen: false, // Trạng thái mở/đóng menu Video
+      isDarkMode: false,
+      isVideoMenuOpen: false,
+      isAvatarMenuOpen: false,
+      user: null, // Dữ liệu người dùng
     };
   },
   methods: {
     toggleTheme() {
       this.isDarkMode = !this.isDarkMode;
-      if (this.isDarkMode) {
-        document.documentElement.classList.add('dark'); // Thêm chế độ tối
-      } else {
-        document.documentElement.classList.remove('dark'); // Xóa chế độ tối
-      }
-    },
-    toggleNav() {
-      this.isNavOpen = !this.isNavOpen; // Mở hoặc đóng thanh nav
+      document.documentElement.classList.toggle('dark', this.isDarkMode);
     },
     toggleVideoMenu() {
-      this.isVideoMenuOpen = !this.isVideoMenuOpen; // Mở hoặc đóng menu Video
+      this.isVideoMenuOpen = !this.isVideoMenuOpen;
+    },
+    handleAvatarClick() {
+      if (!this.user) {
+        // Chưa đăng nhập, chuyển đến trang login
+        this.$router.push({ name: 'login' });
+      } else {
+        // Đã đăng nhập, mở menu
+        this.isAvatarMenuOpen = !this.isAvatarMenuOpen;
+      }
+    },
+    closeAllDropdown(event) {
+     
+    if (this.$refs.videoMenu && !this.$refs.videoMenu.contains(event.target)) {
+      this.isVideoMenuOpen = false;
+    }
+  },
+    handleAccount() {
+      window.open('https://myaccount.google.com/', '_blank');
+    },
+    handleSwitchAccount() {
+      alert('Tính năng chuyển đổi tài khoản chưa được triển khai.');
+    },
+    logout() {
+      this.user = null;
+      location.reload();
+      csrf.removeCookie()
     },
     handleOnlineVideo() {
       alert('Đang hiển thị Video trực tuyến!');
-      this.isVideoMenuOpen = false; // Đóng menu sau khi chọn
+      this.isVideoMenuOpen = false;
     },
-    closeVideoMenu(event) {
-      // Kiểm tra nếu click bên ngoài menu và nút
-      if (this.$refs.videoMenu && !this.$refs.videoMenu.contains(event.target)) {
-        this.isVideoMenuOpen = false; // Đóng menu
-      }
-    },
+    // async getUserInfo() {
+    //   try {
+    //     const token = csrf.getCookie()
+    //     const response = await axios.get('user/info', {
+    //       headers: {
+    //         "Authorization": `Bearer ${token}`
+    //       }
+    //     })
+    //     this.user = response.user
+    //     console.log(response)
+    //   } catch (error) {
+    //     console.log(error)
+    //   }
+    // },
+
+  },
+  async mounted() {
+
+    this.user = await checkAuthStatus()
+
   },
   mounted() {
-    // Lắng nghe sự kiện click toàn cục
-    document.addEventListener('click', this.closeVideoMenu);
-  },
-  beforeUnmount() {
-    // Gỡ bỏ sự kiện khi component bị hủy
-    document.removeEventListener('click', this.closeVideoMenu);
-  },
+  document.addEventListener("click", this.closeAllDropdown);
+},
+beforeUnmount() {
+  document.removeEventListener("click", this.closeAllDropdown);
+}
 };
 </script>
+
 <style scoped>
-/* Dark mode styles */
 .dark {
-  background-color: #1a202c; /* Dark background */
-  color: #f7fafc; /* Light text */
+  background-color: #1a202c;
+  color: #f7fafc;
 }
 
-/* Dropdown menu */
-.relative {
-  position: relative;
+.sizelogo {
+  width: 80px;
+  height: 40px;
 }
 
-.absolute {
-  position: absolute;
+.searchsize {
+  max-width: 250px;
 }
 
-.shadow-md {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/* sm */
+@media (min-width: 640px) {
+
+  .menu {
+    width: 25px;
+    height: 2px;
+    background-color: black;
+  }
+
+  .sizelogo {
+    width: 100px;
+    height: 50px;
+  }
+
+  .searchsize {
+    max-width: 400px;
+  }
+
 }
 
-.rounded-md {
-  border-radius: 0.375rem;
+/* md */
+@media (min-width: 768px) {
+  .menu {
+    width: 25px;
+    height: 2px;
+    background-color: black;
+  }
+
+  .sizelogo {
+    width: 110px;
+    height: 55px;
+  }
+
+  .searchsize {
+    max-width: 428px;
+  }
+
 }
 
-.z-50 {
-  z-index: 50;
+/* lg */
+@media (min-width: 1024px) {
+  .menu {
+    width: 30px;
+    height: 3px;
+    background-color: black;
+  }
+
+  .sizelogo {
+    width: 120px;
+    height: 60px;
+  }
+
+  .searchsize {
+    max-width: 448px;
+  }
 }
 
-.hover\:bg-gray-100:hover {
-  background-color: #f7f7f7;
-}
-/* nut menu 3 vach */
-.menu{
-  width: 30px;
-  height: 3px;
-  background-color: black;
-}
-.dark .menu{
+
+.dark .menu {
   background-color: #cac3c3;
 }
 
-/* cac icon */
-.icon{
-  font-family: 'Boxicons'; 
-  font-size: 1.875rem; 
-  color: inherit; 
-  transition: color 0.1s ease-in-out; 
-}
-.dark .icon{
+
+.dark .icon {
   color: #cac3c3;
 }
+
 .shadow-bottom {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Đổ bóng phía dưới */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 </style>

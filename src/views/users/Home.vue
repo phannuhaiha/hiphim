@@ -2,28 +2,32 @@
   <div :class="{'dark': isDarkMode}" class="min-h-screen flex flex-col ">
     <!-- Header -->
     <Header 
-      @toggle-menu="toggleNav" 
+     
       @toggle-theme="toggleTheme" 
       :isDarkMode="isDarkMode" 
     />
 
     <!-- Nội dung chính: Flex Row để căn Nav và RouterView cạnh nhau -->
-    <div class="flex flex-row flex-grow mt-20 transition-all duration-300 dark:bg-gray-800">
+    <div class="flex flex-row flex-grow mt-16 transition-all duration-300 dark:bg-gray-800">
       <!-- Menu Drawer (Nav) -->
       <div 
-        :class="{'w-40': isNavOpen, 'w-16': !isNavOpen}" 
-        class="h-full bg-gray-300 dark:bg-gray-900 transition-all duration-300"
+        class="h-full sm:z-40 sm:w-52 z-[-1]  bg-gray-300 dark:bg-gray-900 transition-all duration-300"
       >
-        <Nav :isOpen="isNavOpen" :isDarkMode="isDarkMode" class="dark:bg-gray-800" />
+        <Nav  :isDarkMode="isDarkMode" class="dark:bg-gray-800" />
       </div>
       
       <!-- Nội dung chính (được render thông qua RouterView) -->
       <div 
-        class="flex-grow bg-white dark:bg-gray-900 p-3 transition-all duration-300"
+      
+        class="flex-grow w-full max-w-screen bg-white dark:bg-gray-900 py-3  transition-all duration-300"
       >
-        <RouterView :isNavOpen="isNavOpen" :isDarkMode="isDarkMode" />
+        <RouterView  :isDarkMode="isDarkMode" />
       </div>
     </div>
+    <!-- footer -->
+    <Footer
+    @toggle-theme="toggleTheme" 
+    :isDarkMode="isDarkMode"/>
   </div>
 </template>
 
@@ -31,12 +35,14 @@
 import { RouterView } from 'vue-router';
 import Header from '@/components/users/Header.vue';
 import Nav from '@/components/users/Nav.vue';
+import Footer from '@/components/users/Footer.vue';
 
 export default {
   name: 'Home',
   components: {
     Header,
     Nav,
+    Footer,
   },
   data() {
     return {
@@ -97,4 +103,6 @@ nav {
 .mt-16 {
   margin-top: 4rem; /* Chừa khoảng cách cho header (khoảng 64px) */
 }
+
+
 </style>

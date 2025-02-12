@@ -1,10 +1,10 @@
 <template>
   <div :class="{'dark': isDarkMode}" class="min-h-screen flex flex-row">
     <!-- Container chính -->
-    <div class="flex flex-row flex-grow transition-all duration-300 dark:bg-gray-800">
+    <div class="flex flex-row flex-grow transition-all duration-300 dark:bg-gray-500">
       <!-- Nav -->
       <div 
-        :class="{'w-56': isNavOpen, 'w-20': !isNavOpen}" 
+        :class="{'w-48': isNavOpen, 'w-20': !isNavOpen}" 
         class="h-full bg-gray-300 dark:bg-gray-900 transition-all duration-300"
       >
         <Nav :isOpen="isNavOpen" :isDarkMode="isDarkMode" class="dark:bg-gray-800" />
@@ -12,17 +12,16 @@
       <!-- Nội dung chính bên phải Nav -->
     <div class="flex flex-col flex-grow">
       <!-- Header -->
-      <div>
         <Header 
           @toggle-menu="toggleNav" 
           @toggle-theme="toggleTheme" 
           :isDarkMode="isDarkMode"
           :isNavOpen="isNavOpen"
         />
-      </div>
+      
 
       <!-- Nội dung chính -->
-      <div class="flex-grow pt-16 bg-white dark:bg-gray-900 transition-all duration-300">
+      <div class="flex-grow  pt-16 bg-white dark:bg-gray-900 transition-all duration-300">
         <RouterView :isNavOpen="isNavOpen" :isDarkMode="isDarkMode"/>
       </div>
     </div>
@@ -43,16 +42,16 @@ export default {
  },
  data() {
    return {
-     isNavOpen: true,  // Trạng thái mở/đóng của menu Nav
-     isDarkMode: false, // Trạng thái chế độ sáng/tối
+     isNavOpen: true,  
+     isDarkMode: false, 
    };
  },
  methods: {
    toggleNav() {
-     this.isNavOpen = !this.isNavOpen; // Đảo ngược trạng thái khi nhấn vào nút
+     this.isNavOpen = !this.isNavOpen; 
    },
    toggleTheme() {
-     this.isDarkMode = !this.isDarkMode; // Đổi trạng thái sáng/tối
+     this.isDarkMode = !this.isDarkMode; 
    },
  },
 };

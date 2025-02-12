@@ -1,5 +1,5 @@
 # Dockerfile
-FROM node:16
+FROM node:18
 
 # Thiết lập thư mục làm việc
 WORKDIR /usr/src/app/vuejs
