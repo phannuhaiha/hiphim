@@ -7,71 +7,88 @@
       </div>
       <div v-else class="grid bg-auto" :class="isNavOpen ? 'grid-cols-nav' : 'grid-cols-auto'">
 
-        <div v-for="(video, index) in videos" :key="index" class="" @click="goToVideoDetails(video.slug)"
-          style="width: 100%">
-          <div
-            class="thumbnail-wrapper flex flex-col rounded-xl text-black transition transform hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue">
+        <div v-for="(video, index) in videos" :key="index" style="width: 100%">
+          <!-- Phần hình ảnh video (Thumbnail) -->
+          <a
+            class="thumbnail-wrapper flex flex-col rounded-xl text-black transition transform hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue"
+            :href="`productdetail/${video.slug}`">
             <img :src="video.thumbnail || '/default-thumbnail.jpg'" :alt="video.title" class="thumbnail" />
-          </div>
+          </a>
 
           <!-- Tiêu đề và thông tin -->
-          <div class="flex flex-row justify-between  pt-2 w-[95%] mb-3">
+          <div class="flex flex-row justify-between pt-2 w-full mb-3">
             <div class="flex flex-row w-full">
-              <!-- Avatar -->
-              <img v-if="video.user.avatar" :src="video.user.avatar"
-                class="flex w-[10%] h-[40%] rounded-full items-center ml-1 bg-gray-400" />
-              <div v-else class="flex w-[10%] h-[40%] rounded-full items-center ml-1 bg-gray-400"></div>
-              <!-- Tiêu đề -->
-              <div class="flex w-[70%] flex-col justify-left text-left font-roboto ml-3 text-black dark:text-white">
+              <a v-if="video.user.id == idUser " :href="`/mychannel`">
+                <img v-if="video.user.avatar" :src="video.user.avatar"
+                  class="flex w-[90%] h-[50%] rounded-full items-center ml-1 bg-gray-400" />
+                <div v-else class="flex w-[10%] h-[40%] rounded-full items-center ml-1 bg-gray-400"></div>
+              </a>
+
+              <a v-else :href="`/channel-user/${video.user.id}`">
+                <img v-if="video.user.avatar" :src="video.user.avatar"
+                  class="flex w-[90%] h-[50%] rounded-full items-center ml-1 bg-gray-400" />
+                <div v-else class="flex w-[10%] h-[40%] rounded-full items-center ml-1 bg-gray-400"></div>
+              </a>
+
+
+              <!-- Tiêu đề video -->
+              <div class="flex w-[70%] flex-col justify-left text-left font-roboto ml-3 text-black dark:text-gray-300"
+                @click="goToVideoDetails(video.slug)">
                 <h1 class="text-short">{{ video.title }}</h1>
-                <h2>{{ video.user.name }}</h2>
+                <h2 >{{ video.user.name }}</h2>
                 <h2>{{ video.view }} lượt xem</h2>
               </div>
+
               <div class="flex w-[10%]">
                 <i class="bx bx-dots-vertical-rounded dark:text-white text-2xl"></i>
               </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
 
     <!-- hieenr thij tren DIEN THOAI -->
     <div class="sm:hidden block">
-      <div class="flex flex-col space-y-3 items-center w-full h-full px-7">
+      <div class="flex flex-col space-y-3 w-full h-full">
         <!-- Video Card -->
         <div v-if="videos.length === 0" class="text-center p-5">
-        <p>Không có video nào để hiển thị.</p>
-      </div>
-      <div v-else class="flex flex-col space-y-3 bg-auto w-full h-full" >
+          <p>Không có video nào để hiển thị.</p>
+        </div>
+        <div v-else class="grid bg-auto" :class="isNavOpen ? 'grid-cols-nav' : 'grid-cols-auto'">
 
-        <button v-for="(video, index) in videos" :key="index" class="w-full h-full object-cover rounded-lg" @click="goToVideoDetails(video.slug)"
-          >
-          <div
-            class="thumbnail-wrapper flex flex-col w-full rounded-xl text-black transition transform hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue">
-            <img :src="video.thumbnail || '/default-thumbnail.jpg'" :alt="video.title" class="thumbnail" />
-          </div>
+          <button v-for="(video, index) in videos" :key="index" class="" @click="goToVideoDetails(video.slug)"
+            style="width: 100%">
+            <div
+              class="thumbnail-phone flex flex-col rounded-xl text-black transition transform hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue">
+              <img :src="video.thumbnail || '/default-thumbnail.jpg'" :alt="video.title" class="thumbnail" />
+            </div>
 
-          <!-- Tiêu đề và thông tin -->
-          <div class="flex flex-row justify-between pt-2 w-full mb-3">
-            <div class="flex flex-row w-full">
-              <!-- Avatar -->
-              <img v-if="video.user.avatar" :src="video.user.avatar"
-                class="flex w-[10%] h-[40%] rounded-full items-center ml-1 bg-gray-400" />
-              <div v-else class="flex w-[10%] h-[40%] rounded-full items-center ml-1 bg-gray-400"></div>
-              <!-- Tiêu đề -->
-              <div class="flex w-[70%] flex-col justify-left text-left font-roboto ml-3 text-black dark:text-white">
-                <h1 class="text-short">{{ video.title }}</h1>
-                <h2 class="text-xs text-gray-500 dark:text-white">{{ video.user.name }}</h2>
-                <h2 class="text-xs text-gray-500 dark:text-white">{{ video.view }} lượt xem</h2>
-              </div>
-              <div class="flex w-[10%]">
-                <i class="bx bx-dots-vertical-rounded dark:text-white text-2xl"></i>
+            <!-- Tiêu đề và thông tin -->
+            <div class="flex flex-row justify-between pt-2 w-full mb-3">
+              <div class="flex flex-row justify-between w-full">
+                <!-- Avatar -->
+                <div class="flex w-[13%]">
+                  <img v-if="video.user.avatar" :src="video.user.avatar"
+                  class="flex w-10 h-10 rounded-full items-center ml-1 bg-gray-400" />
+                  <div v-else class="flex w-[100%] h-[40%] rounded-full items-center ml-1 bg-gray-400"></div>
+                </div>
+                
+                
+                <!-- Tiêu đề -->
+                <div class="flex w-[77%] flex-col justify-left text-left font-roboto ml-3 text-black dark:text-white">
+                  <h1 class="text-short">{{ video.title }}</h1>
+                  <h2>{{ video.user.name }}</h2>
+                  <h2>{{ video.view }} lượt xem</h2>
+                </div>
+                <div class="flex w-[10%]">
+                  <i class="bx bx-dots-vertical-rounded dark:text-white text-2xl"></i>
+                </div>
               </div>
             </div>
-          </div>
-        </button>
-      </div>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -80,7 +97,9 @@
 
 <script>
 import VideoPlayer from "@/components/users/VideoPlayer.vue";
+import { checkAuthStatus } from "@/config/auth";
 import axios from "@/config/axios.js";
+import csrf from "@/config/csrf";
 
 export default {
   name: "ProductView",
@@ -95,17 +114,20 @@ export default {
   },
   data() {
     return {
-      watched: [
-        {
-          src: "path-to-video1.mp4", title: "20 cụm từ Tiếng Anh thông dụng kèm theo ví dụ và giải thích chi tiết", views: "1", time: "49 phút trước",
-        },
-      ],
       videos: [],
+      token: null,
+      idUser: null,
     };
   },
-  mounted() {
+  async mounted() {
     // Gọi API khi component được mount
     this.getAllVideo();
+    const token = csrf.getCookie()
+    if (token) {
+      this.token = token
+      const auth = await checkAuthStatus()
+      this.idUser = auth.id
+    }
   },
   methods: {
     async getAllVideo() {
@@ -123,6 +145,7 @@ export default {
     },
     goToVideoDetails(slug) {
       if (slug) {
+
         this.$router.push({
           name: "detail",
           params: { slug: slug },
@@ -169,6 +192,15 @@ export default {
   border-radius: 8px;
 }
 
+.thumbnail-phone {
+  width: full;
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+  background: #f3f4f6;
+  border-radius: 8px;
+}
+
 .thumbnail {
   width: 100%;
   height: 100%;
@@ -177,10 +209,10 @@ export default {
 }
 
 .text-short {
-  font-size: 1rem
+  font-size: 1.125rem
     /* 18px */
   ;
-  line-height: 1.5rem
+  line-height: 1.75rem
     /* 28px */
   ;
   font-family: Roboto, sans-serif;

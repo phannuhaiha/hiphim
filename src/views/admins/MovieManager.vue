@@ -6,24 +6,53 @@
             <div class="flex w-full space-x-4">
                 <!-- Thanh tìm kiếm -->
                 <div class="flex w-[50%]">
-                    <input type="text" v-model="searchQuery" placeholder="Search"
+                    <input type="text" placeholder="Search"
                         class="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300" />
-
                 </div>
 
-                <!-- Bộ lọc thời gian và trạng thái -->
+
                 <div class="flex space-x-4 w-[50%]">
-                    <button @click="setList('verified')" :class="{
-                        'bg-gray-700 text-white': currentList === 'verified',
-                        'bg-gray-200 text-gray-800 hover:underline': currentList !== 'verified'
-                    }" class="flex rounded-md bg-gray-200 text-gray-800 hover:underline px-4 items-center"> Đã duyệt
-                    </button>
-                    <button @click="setList('unverified')" :class="{
-                        'bg-gray-700 text-white': currentList === 'unverified',
-                        'bg-gray-200 text-gray-800 hover:underline': currentList !== 'unverified'
-                    }" class="flex rounded-md bg-gray-200 text-gray-800 hover:underline px-2 items-center"> Chưa duyệt
+                    <button @click="toggleForm"
+                        class="flex rounded-md bg-gray-200 text-gray-800 hover:underline px-4 items-center"> NHập thông
+                        tin video
                     </button>
                 </div>
+                <!-- Modal Form -->
+                <div v-if="showForm"
+                    class="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
+                    <div class="bg-white p-6 rounded-md shadow-lg max-w-md w-full">
+                        <h2 class="text-lg font-semibold">Form nhập thông tin video</h2>
+                        <form @submit.prevent="submitForm">
+                            <div class="mt-2">
+                                <label for="title" class="block text-gray-700">Tiêu đề Tên Phim :</label>
+                                <input v-model="form.title" type="text" id="title"
+                                    class="mt-1 p-2 w-full border rounded-md" />
+                            </div>
+                            <div class="mt-2">
+                                <label for="title" class="block text-gray-700">link ảnh thumnail:</label>
+                                <input v-model="form.title" type="text" id="title"
+                                    class="mt-1 p-2 w-full border rounded-md" />
+                            </div>
+
+                            <div class="mt-2">
+                                <label for="description" class="block text-gray-700">Mô tả:</label>
+                                <textarea v-model="form.description" id="description"
+                                    class="mt-1 p-2 w-full border rounded-md"></textarea>
+                            </div>
+                            <div class="mt-4 flex justify-between">
+                                <button type="submit" class="px-4 py-2 bg-blue text-white rounded-md hover:bg-blue-600">
+                                    Gửi thông tin
+                                </button>
+                                <button @click="toggleForm" type="button"
+                                    class="px-4 py-2 bg-red text-white rounded-md hover:bg-red-600">
+                                    Đóng
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
             </div>
 
             <div class="overflow-y-auto max-h-[400px] pr-2">
@@ -32,43 +61,43 @@
                         <tr class="w-full bg-gray-100 border-b border-gray-300 dark:bg-slate-700 dark:text-white">
                             <th class="w-[1%] p-2 text-left">STT</th>
                             <th class="w-[10%] p-2 text-left ">Thumbnail</th>
-                            <th class="w-[30%] p-2 text-left">Mô tả video</th>
-                            <th class="w-[15%] p-2 text-left">Thời gian đăng</th>
-                            <th class="w-[10%] p-2 text-left">Tác giả</th>
+                            <th class="w-[30%] p-2 text-left">Tên phim</th>
+                            <th class="w-[15%] p-2 text-left">Tên phụ</th>
+                            <th class="w-[10%] p-2 text-left">Địa chỉ file</th>
                             <th class="w-[10%] p-2 text-left">Trạng thái</th>
                             <th class="w-[15%] p-2 text-left">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(video, index) in displayedVideos" :key="index"
+                        <tr v-for="(film, index) in filteredData" :key="index"
                             class="border-b border-gray-300 dark:text-white">
-                            <td class="w-[1%] p-2 items-center">{{ video.stt }}</td>
+                            <td class="w-[1%] p-2 items-center">{{ index + 1 }}</td>
                             <!-- thumbnail -->
                             <td class="w-[10%] p-2 cursor-pointer">
-                                <img @click="showModal('showvideo', video.url, index)" :src="video.thumbnail"
-                                    alt="Thumbnail" class="w-16 h-16 rounded" />
+                                <img @click="showModal('showvideo', film)" :src="films.thumbnail" alt="Thumbnail"
+                                    class="w-16 h-16 rounded" />
                             </td>
                             <td class="w-[30%] p-2 text-left">
                                 <div class="flex w-full flex-col space-y-2">
                                     <span
                                         class="flex w-[390px] font-bold text-base overflow-hidden whitespace-nowrap overflow-ellipsis">{{
-                                            video.title }}</span>
-                                    <span
+                                            film.mainname }}</span>
+                                    <!-- <span
                                         class="flex text-sm w-[390px]  whitespace-nowrap overflow-ellipsis overflow-hidden">{{
-                                            video.description }}</span>
+                                            film.description }}</span> -->
                                 </div>
                             </td>
-                            <td class="w-[15%] p-2 text-left">{{ video.created_at }}</td>
-                            <td class="w-[10%] p-2 text-left">{{ video.user.name }}</td>
-                            <td class="w-[10%] p-2 text-left">{{ video.verified }}</td>
+                            <td class="w-[15%] p-2 text-left">{{ film.name }}</td>
+                            <td class="w-[10%] p-2 text-left"></td>
+                            <td class="w-[10%] p-2 text-left">{{ film.status }}</td>
                             <!-- Action -->
                             <td v-if="currentList == 'unverified'" class="w-[15%]  ">
                                 <div class="flex items-center gap-4 text-3xl">
                                     <!-- <button @click="videoVerifition(video.slug)"><i class="bx bx-check text-blue"></i></button>
                   <button @click="deleteVideo(video.slug)"><i class="bx bx-x text-rose-600"></i></button> -->
-                                    <button @click="showModal('verificationVideo', video.slug, index)"><i
+                                    <button @click="showModal('verificationVideo', video.slug)"><i
                                             class="bx bx-check text-blue"></i></button>
-                                    <button @click="showModal('deleteVideo', video.slug, index)"><i
+                                    <button @click="showModal('deleteVideo', video.slug)"><i
                                             class="bx bx-x text-rose-600"></i></button>
                                 </div>
                             </td>
@@ -76,11 +105,11 @@
                             <td v-else-if="currentList == 'verified'" class="w-[15%]  ">
                                 <div class="flex items-center gap-4 text-3xl">
                                     <!-- <i class="bx bx-x"></i> -->
-                                    <button @click="showModal('deleteVideoVerification', video.slug, index)"><i
-                                            class="bx bx-trash text-rose-600"></i></button>
+                                    <button @click="showModal('deleteVideoVerification', film)">
+                                        <i class="bx bx-trash text-rose-600"></i>
+                                    </button>
                                 </div>
                             </td>
-
                         </tr>
                     </tbody>
                 </table>
@@ -116,18 +145,16 @@
                     <!-- modal 1-->
                     <div v-else-if="typeModal == 'showvideo'" class="flex items-center justify-center w-full h-full">
                         <div
-                            class="flex flex-col space-y-2 items-center justify-center w-[850px] h-[500px] shadow-lg rounded-xl bg-auto">
-                            <div class="flex w-full ">
+                            class="flex flex-col space-y-2 items-center justify-center w-[850px] h-[500px] shadow-lg rounded-xl bg-gray-500">
+                            <div class="flex w-full h-[6%] justify-end">
                                 <button @click="cancelDelete()"
-                                class="absolute flex items-center top-2 left-1/2 transform -translate-x-1/2 bg-gray-300 bg-opacity-50 text-white px-4 py-2 rounded-full hover:bg-opacity-70">
-                                    <i class="bx bx-x text-3xl font-bold"></i>
-                                    <span class="text-xl">Đóng</span>
-                                    
+                                    class="flex text-xl max-w-full items-end justify-end hover:underline">
+                                    <i class="bx bx-x text-3xl font-bold text-black"></i>Đóng
                                 </button>
                             </div>
 
                             <!-- video demo -->
-                            <div class="flex max-w-full h-full aspect-video rounded-xl justify-center ">
+                            <div class="flex max-w-full h-[94%] aspect-video rounded-xl justify-center ">
                                 <video controls class="max-w-full max-h-full rounded-xl object-cover"
                                     ref="videoPlayer"></video>
                             </div>
@@ -149,9 +176,22 @@ import { checkAuthAdmin } from '@/config/admin';
 
 export default {
     data() {
+
         return {
             currentList: 'verified',
-            videos: [],
+            films: [ /* dữ liệu film */],
+            showForm: false,  // Điều khiển việc hiển thị form
+            form: {
+                title: '',
+                description: '',
+            },
+            films: [
+                { stt: "1", thumbnail: "", mainname: "砂塵の彼方へ...", name: "dasdasdsa", },
+                { stt: "2", thumbnail: "", mainname: "Rực rỡ quá", name: "Đẹp", },
+                { stt: "3", thumbnail: "", mainname: "Thác nước", name: "Thác nước", },
+                { stt: "4", thumbnail: "", mainname: "Genshit", name: "adasdas", },
+                { stt: "5", thumbnail: "", mainname: "Cosplay", name: "", }
+            ],
             displayedData: [],
             itemsPerload: 10,
             observer: null,
@@ -159,28 +199,16 @@ export default {
             slugDeleteVideo: null,
             typeModal: null,
             user: [],
-            rowToDelete: null,
-            searchQuery: '',
-
+            showForm: false,
 
         };
     },
-    computed: {
-        displayedVideos() {
-        if (!this.searchQuery) {
-            return this.displayedData; // Nếu không có tìm kiếm, hiển thị toàn bộ danh sách
-        }
-        return this.displayedData.filter(video =>
-            video.title.toLowerCase().includes(this.searchQuery.toLowerCase())
-        );
-    }
-    },
     methods: {
-        showModal(typeModal, slug, index) {
+
+        showModal(typeModal, slug) {
             this.showConfirmModal = true;
             this.typeModal = typeModal
             this.slugDeleteVideo = slug
-            this.rowToDelete = index
             if (typeModal === 'showvideo') {
                 this.$nextTick(() => {
                     this.playVideo(slug);
@@ -192,6 +220,14 @@ export default {
             await this.getVideo(typeList);
             this.displayedData = this.videos.slice(0, this.itemsPerLoad);
         },
+        toggleForm() {
+            this.showForm = !this.showForm;
+        },
+        // Handle form submission
+        submitForm() {
+            console.log('Form submitted with data:', this.form);
+            // You can handle form data submission here (e.g., send to API)
+        },
         async getVideo(typeVideo) {
             try {
                 const token = csrf.getCookieAdmin();
@@ -201,7 +237,6 @@ export default {
                     }
                 });
                 this.videos = response.videos || [];
-                console.log(response)
             } catch (error) {
                 console.error("Lỗi tải dữ liệu:", error);
             }
@@ -249,11 +284,8 @@ export default {
                         "Authorization": `Bearer ${token}`
                     }
                 })
-                // this.setList('unverified');
-                // this.setupObserver();
-                if (this.rowToDelete !== null) {
-                    this.displayedData.splice(this.rowToDelete, 1);
-                }
+                this.setList('unverified');
+                this.setupObserver();
             } catch (error) {
                 console.log(error)
             } finally {
@@ -269,11 +301,8 @@ export default {
                         "Authorization": `Bearer ${token}`
                     }
                 })
-                // this.setList('verified');
-                // this.setupObserver();
-                if (this.rowToDelete !== null) {
-                    this.displayedData.splice(this.rowToDelete, 1);
-                }
+                this.setList('verified');
+                this.setupObserver();
             } catch (error) {
                 console.log(error)
             } finally {
@@ -284,7 +313,6 @@ export default {
             this.slugDeleteVideo = null
             this.showConfirmModal = false;
             this.typeModal = null
-            this.rowToDelete = null
         },
         playVideo(src) {
             const video = this.$refs.videoPlayer;

@@ -21,7 +21,7 @@
                     <img 
                     :src="avatar"
                     class="w-32 h-32 rounded-full object-cover mx-auto mb-2 border"
-                    alt="Avatar"></img>
+                    alt="Avatar"/>
                 </div>
                 <!-- Upload Button -->
           <label

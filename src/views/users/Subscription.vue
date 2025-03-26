@@ -1,75 +1,71 @@
-<template> 
+<template>
   <div class="background bg-white dark:bg-gray-900">
     <div class="sm:block hidden">
-      <div class="bg-auto flex flex-col space-y-2 sm:p-3">
-      <h1 class="bg-auto ml-4 text-lg sm:text-3xl font-bold font-roboto text-black dark:text-white">
-      KÊNH ĐĂNG KÍ
-    </h1>
-    <!-- Kênh 1 -->
-    <ChannelCarousel :videos="videosChannel1" channelName="Kênh đăng ký 1" />
-    <!-- Kênh 2 -->
-    <ChannelCarousel :videos="videosChannel2" channelName="Kênh đăng ký 2" />
-    <!-- Kênh 3 -->
-    <ChannelCarousel :videos="videosChannel3" channelName="Kênh đăng ký 3" />
-    </div>
+      <div class="bg-auto flex flex-col space-y-1 sm:p-3">
+        <h1 class="bg-auto ml-4 text-lg sm:text-3xl font-bold font-roboto text-black dark:text-white">
+          KÊNH ĐĂNG KÍ
+        </h1>
+        <!-- Kênh 1 -->
+        <div v-for="(channel,index) in channels" :key="index"
+        class="flex flex-col w-full bg-auto m-5 pr-5 py-2 duration-300 transition-all border-b border-gray-300">
+          <ChannelCarousel :videos="channel.videos" :channelName="channel" />
+          <!-- <ChannelCarousel :videos="videosChannel1" channelName="Kênh đăng ký 1" /> -->
+        </div>
+
+      </div>
+
     </div>
 
 
     <!-- Màn hình điện thoại -->
-    <div class="sm:hidden block "> 
+    <div class="sm:hidden block ">
       <div class="flex flex-col space-y-3 ">
         <!-- Chuỗi kênh đã đăng kính (chỉ avt) -->
-          <div><avt-group/></div>
+        <div><avt-group /></div>
         <!-- Chuoi video  -->
-         <div class="flex flex-col space-y-3 w-full h-full px-4">
+        <div class="flex flex-col space-y-3 w-full h-full px-4">
           <!-- Video Card -->
-      <div
-        v-for="(video, index) in videos"
-        :key="index"
-        class="flex flex-col bg-auto items-center rounded-lg"
-      >
-        <!-- Video -->
-        <div class="relative w-full h-40">
-          <video
-            :src="video.src"
-            controls
-            class="w-full h-full object-cover rounded-lg"
-          ></video>
-        </div>
+          <div v-for="(video, index) in videos" :key="index" class="flex flex-col bg-auto items-center rounded-lg">
+            <!-- Video -->
+            <div class="relative w-full h-40">
+              <video :src="video.src" controls class="w-full h-full object-cover rounded-lg"></video>
+            </div>
 
-        <div class="flex flex-row w-full mt-2">
-          <div class="w-10 h-10 rounded-full bg-slate-600 "></div>
-          <div class="flex flex-col px-2 w-[80%]">
-            <!-- Text Section -->
-        <div class="">
-          <p class="text-purple-600 font-bold text-sm line-clamp-2 overflow-hidden text-ellipsis">
-            {{ video.title }}
-          </p>
-        </div>
+            <div class="flex flex-row w-full mt-2">
+              <div class="w-10 h-10 rounded-full bg-slate-600 "></div>
+              <div class="flex flex-col px-2 w-[75%]">
+                <!-- Text Section -->
+                <div class="">
+                  <p class="text-purple-600 font-bold text-sm line-clamp-2 overflow-hidden text-ellipsis">
+                    {{ video.title }}
+                  </p>
+                </div>
 
-        <!-- Views and Time -->
-        <div class="mt-2 text-gray-600 text-xs">
-          <span>{{ video.views }} lượt xem • {{ video.time }}</span>
-        </div>
+                <!-- Views and Time -->
+                <div class="mt-2 text-gray-600 text-xs">
+                  <span>{{ video.views }} lượt xem • {{ video.time }}</span>
+                </div>
+              </div>
+              <!-- icon 3 chaams docj -->
+              <div class="flex w-[10%] ">
+                <i class="bx bx-dots-vertical-rounded dark:text-white text-2xl"></i>
+              </div>
+            </div>
+
           </div>
-          <!-- icon 3 chaams docj -->
-           <div class="flex w-[10%] ">
-            <i class="bx bx-dots-vertical-rounded dark:text-white text-2xl"></i>
-           </div>
         </div>
-        
-      </div>
-         </div>
       </div>
     </div>
-    
-    
+
+
   </div>
 </template>
 
 <script>
 import ChannelCarousel from "@/components/users/ChannelCarousel.vue";
 import AvtGroup from '@/components/users/AvtGroup.vue';
+import csrf from "@/config/csrf";
+import axios from "@/config/axios";
 
 export default {
   name: "Subscription",
@@ -89,7 +85,7 @@ export default {
         { src: "video1.mp4", title: "Video 1", channel: "Kênh 1", views: "10K" },
         { src: "video2.mp4", title: "Video 2", channel: "Kênh 1", views: "20K" },
         { src: "video3.mp4", title: "Video 3", channel: "Kênh 1", views: "15K" },
-        
+
       ],
       videosChannel2: [
         { src: "video4.mp4", title: "Video 4", channel: "Kênh 2", views: "30K" },
@@ -98,7 +94,7 @@ export default {
         { src: "video1.mp4", title: "Video 1", channel: "Kênh 1", views: "10K" },
         { src: "video2.mp4", title: "Video 2", channel: "Kênh 1", views: "20K" },
         { src: "video3.mp4", title: "Video 3", channel: "Kênh 1", views: "15K" },
-        
+
       ],
       videosChannel3: [
         { src: "video4.mp4", title: "Video 4", channel: "Kênh 2", views: "30K" },
@@ -107,7 +103,7 @@ export default {
         { src: "video1.mp4", title: "Video 1", channel: "Kênh 1", views: "10K" },
         { src: "video2.mp4", title: "Video 2", channel: "Kênh 1", views: "20K" },
         { src: "video3.mp4", title: "Video 3", channel: "Kênh 1", views: "15K" },
-        
+
       ],
       videos: [
         {
@@ -121,11 +117,33 @@ export default {
         }
 
       ],
+      channels: [],
+
+
     };
   },
+  methods:{
+    async getChannel(){
+      try {
+        const token = csrf.getCookie()
+        const response = await axios.get('channel/get-sub-channel',{
+          headers:{
+            "Authorization": `Bearer ${token}`
+          }
+        })
+        this.channels = response.channel
+        console.log(response)
+      } catch (error) {
+        
+      }
+    }
+  },
+  async mounted(){
+    await this.getChannel()
+  }
+
+
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

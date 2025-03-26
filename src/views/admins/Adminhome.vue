@@ -1,13 +1,13 @@
 <template>
-  <div :class="{'dark': isDarkMode}" class="min-h-screen flex flex-row">
+  <div  class="min-h-screen flex flex-row">
     <!-- Container chính -->
     <div class="flex flex-row flex-grow transition-all duration-300 dark:bg-gray-500">
       <!-- Nav -->
       <div 
-        :class="{'w-48': isNavOpen, 'w-20': !isNavOpen}" 
-        class="h-full bg-gray-300 dark:bg-gray-900 transition-all duration-300"
+        
+        class="h-full w-48 bg-gray-300 dark:bg-gray-900 transition-all duration-300"
       >
-        <Nav :isOpen="isNavOpen" :isDarkMode="isDarkMode" class="dark:bg-gray-800" />
+        <Nav class="dark:bg-gray-800" />
       </div>
       <!-- Nội dung chính bên phải Nav -->
     <div class="flex flex-col flex-grow">
@@ -15,14 +15,13 @@
         <Header 
           @toggle-menu="toggleNav" 
           @toggle-theme="toggleTheme" 
-          :isDarkMode="isDarkMode"
-          :isNavOpen="isNavOpen"
+          
         />
       
 
       <!-- Nội dung chính -->
       <div class="flex-grow  pt-16 bg-white dark:bg-gray-900 transition-all duration-300">
-        <RouterView :isNavOpen="isNavOpen" :isDarkMode="isDarkMode"/>
+        <RouterView />
       </div>
     </div>
     </div>
@@ -33,6 +32,8 @@
 import { RouterView } from 'vue-router';
 import Header from "@/components/admins/HeaderAD.vue";
 import Nav from "@/components/admins/NavAD.vue";
+import { checkAuthAdmin } from '@/config/admin';
+import router from '@/router';
 
 export default {
  name: 'admin-home',
@@ -42,18 +43,23 @@ export default {
  },
  data() {
    return {
-     isNavOpen: true,  
-     isDarkMode: false, 
+    //  isNavOpen: false,  
+    //  isDarkMode: false,
+    user: [],
+
    };
  },
  methods: {
-   toggleNav() {
-     this.isNavOpen = !this.isNavOpen; 
-   },
-   toggleTheme() {
-     this.isDarkMode = !this.isDarkMode; 
-   },
+  //  toggleNav() {
+  //    this.isNavOpen = !this.isNavOpen; 
+  //  },
+  //  toggleTheme() {
+  //    this.isDarkMode = !this.isDarkMode; 
+  //  },
  },
+ async mounted(){
+  this.user = await checkAuthAdmin()
+ }
 };
 </script>
 

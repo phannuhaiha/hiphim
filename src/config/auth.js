@@ -12,6 +12,7 @@ export const checkAuthStatus = async () => {
         return response.user
     } catch (error) {
         console.log("Nguời dùng chưa đăng nhập: ", error)
+        csrf.removeCookie()
         return null
     }
 }

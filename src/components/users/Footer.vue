@@ -9,7 +9,7 @@
             </div>
             </router-link>
                 
-            <Router-link to="/subscription" class="w-[25%]">
+            <Router-link to="/subscription" class="w-[26%]">
                 <div class="flex flex-col space-y-1 text-black  items-center ">
             <i  class="bx bx-play-circle text-2xl"></i>
             <span class="text-sm text-black font-roboto">Kênh đăng kí</span>
@@ -19,14 +19,17 @@
             <Router-link to="/series" class="w-[25%]">
                 <div class="flex flex-col space-y-1 text-black  items-center ">
             <i  class="bx bx-book text-2xl"></i>
-            <span class="text-sm text-black font-roboto">Phim bộ</span>
+            <span class="text-sm text-black font-roboto">Phim lẻ</span>
         </div>
             </Router-link>
 
-            <Router-link to="" class="w-[25%]"><div class="flex flex-col space-y-1 text-black  items-center ">
-            <i  class="bx bx-user-circle  text-2xl"></i>
-            <span class="text-sm text-black font-roboto">Bạn</span>
-        </div></Router-link>
+            <button
+             @click="handleClick" class="w-[24%]">
+            <div class="flex flex-col space-y-1 text-black  items-center ">
+                <i  class="bx bx-user-circle  text-2xl"></i>
+                <span class="text-sm text-black font-roboto">Bạn</span>
+            </div>
+        </button>
             </div> 
     </div></div>
     
@@ -35,7 +38,16 @@
   <script>
   
   export default {
-    
+    computed: {
+    isLoggedIn() {
+      return localStorage.getItem("token") !== null; // Kiểm tra xem token có tồn tại không
+    }
+  },
+  methods: {
+    handleClick() {
+      this.$router.push(this.isLoggedIn ? "/mychannel" : "/login");
+    }
+  }
   };
   </script>
   

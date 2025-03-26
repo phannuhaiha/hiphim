@@ -25,7 +25,7 @@
        <router-link to="/series">
         <button  class="navmenu h-16 flex-row space-x-2">
         <i  class="bx bx-movie icon text-3xl"></i>
-        <span  class="text-short text-[18px] hover:underline">Phim bộ</span>
+        <span  class="text-short text-[18px] hover:underline">Phim lẻ</span>
       </button>
        </router-link>
       
@@ -47,16 +47,16 @@
            <router-link to="/watched">
             <button class="navmenu space-x-2 h-16 ">
             <i class="bx bx-repost icon text-3xl"></i>
-            <span class="text-short text-[18px] hover:underline">Phim đã xem</span>
+            <span class="text-short text-[18px] hover:underline">Video đã thích</span>
           </button>
            </router-link>
           
 
           <!-- Kênh đã thích -->
-          <button class="navmenu space-x-2 h-16 ">
+          <!-- <button class="navmenu space-x-2 h-16 ">
             <i class="bx bx-like icon text-3xl"></i>
             <span class="text-short text-[18px] hover:underline">Kênh đã thích</span>
-          </button>
+          </button> -->
             
         </div>
       </div>

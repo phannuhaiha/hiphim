@@ -1,7 +1,7 @@
 <template>
     <div class="product w-full m-2 sm:m-5 pr-5 bg-white dark:bg-gray-900 duration-300 transition-all">
       <!-- Container chứa các video -->
-      <div class="grid gap-4 bg-auto " :class="isNavOpen ? 'grid-cols-nav' : 'grid-cols-auto'">
+      <div class="grid gap-4 bg-auto grid-cols-nav ">
         
         <!-- Mỗi video -->
         <div
@@ -32,18 +32,16 @@
           
           <!-- Tiêu đề và thông tin -->
           <div class="flex flex-row justify-between pt-2 w-full">
-            <div class="flex flex-row">
-              <!-- Avatar -->
-              <div class="flex w-7 h-7 rounded-full items-center ml-1 bg-gray-400"></div>
+            <div class="flex flex-row w-[93%]">
+              
               <!-- Tiêu đề -->
-              <div class="flex flex-col justify-left text-left font-roboto ml-3 text-black dark:text-white">
-                <h1 class="text-lg font-roboto font-bold">{{ video.title }}</h1>
-                <h2>{{ video.channel }}</h2>
-                <h2>{{ video.views }} lượt xem</h2>
+              <div class="flex w-full flex-col justify-left text-left font-roboto ml-3 text-black dark:text-white">
+                <h1 class="text-lg font-roboto font-bold line-clamp-2 overflow-hidden text-ellipsis">{{ video.title }}</h1>
+                <h2 >{{ video.views }} lượt xem</h2>
               </div>
             </div>
             <!-- Menu dấu ba chấm -->
-            <button class="flex flex-col m-2 space-y-1">
+            <button class="flex flex-col w-[7%] items-center space-y-1">
               <div class="w-1 h-1 bg-black dark:bg-white rounded-full"></div>
               <div class="w-1 h-1 bg-black dark:bg-white rounded-full"></div>
               <div class="w-1 h-1 bg-black dark:bg-white rounded-full"></div>

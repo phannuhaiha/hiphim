@@ -3,7 +3,7 @@
     <!-- Header -->
     <div :class="isDarkMode ? 'dark' : ''"
       class="flex fixed z-50 w-screen justify-between items-center transition-all duration-300 p-2 bg-white dark:bg-gray-500 text-black dark:text-white shadow-bottom space-x-2">
-      
+
       <!-- Góc trái: Menu Icon và Logo -->
       <div class="flex flex-row items-center space-x-1 md:space-x-4">
         <!-- Menu Icon (Hamburger) -->
@@ -13,12 +13,11 @@
           </div>
         </div>
 
-        <!-- Logo hoặc Avatar -->
-        <router-link to="/product">
+        <router-link to="/product" @click.native="navigateAndReload">
           <div class="sizelogo bg-auto rounded-full py-1 sm:py-2 text-white font-bold">
             <!-- Hiển thị logo khi chưa đăng nhập, avatar khi đã đăng nhập -->
-            <img v-if="!user" src="../icons/NewLogo.png" class="flex w-full h-full" />
-            <img v-else :src="user.avatar" class="flex w-full h-full rounded-full" />
+            <img v-if="user && user.premium == 1" src="../icons/LogoPremium.png" class="flex w-full h-full" />
+            <img v-else src="../icons/NewLogo.png" class="flex w-full h-full" />
           </div>
         </router-link>
       </div>
@@ -26,9 +25,9 @@
       <!-- Thanh tìm kiếm -->
       <div class="flex flex-grow mx-auto items-center">
         <div class="flex w-full px-3 sm:px-10 lg:px-32 items-center justify-center space-x-1">
-          <input type="text" placeholder="Tìm kiếm"
+          <input type="text" placeholder="Tìm kiếm" v-model="searchQuery"
             class="w-full py-0 md:py-2 px-2 md:px-4 border border-gray-500 rounded-full dark:text-black focus:outline-none" />
-          <button
+          <button @click="searchVideo()"
             class="flex p-2 w-4 h-4 sm:w-9 sm:h-9 md:w-10 md:h-10 lg:w-12 lg:h-12 items-center justify-center rounded-full hover:bg-gray-300 dark:hover:bg-gray-800 focus:outline-none">
             <i class="bx bx-search text-xl sm:text-3xl"></i>
           </button>
@@ -45,12 +44,14 @@
           <div v-if="isVideoMenuOpen" @click.stop class="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-md z-50">
             <ul class="py-1">
               <li>
-                <button @click="handleOnlineVideo" class="block w-full text-left dark:text-black px-4 py-2 hover:bg-gray-100">
+                <button @click="handleOnlineVideo"
+                  class="block w-full text-left dark:text-black px-4 py-2 hover:bg-gray-100">
                   Video trực tuyến
                 </button>
               </li>
               <li>
-                <router-link to="/uploadvideo" class="block w-full text-left px-4 dark:text-black py-2 hover:bg-gray-100">
+                <router-link to="/uploadvideo"
+                  class="block w-full text-left px-4 dark:text-black py-2 hover:bg-gray-100">
                   Tạo video
                 </router-link>
               </li>
@@ -73,7 +74,8 @@
           </button>
 
           <!-- Dropdown menu -->
-          <div v-if="user && isAvatarMenuOpen" ref="avatarMenu" class="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-md z-50">
+          <div v-if="user && isAvatarMenuOpen" ref="avatarMenu"
+            class="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-md z-50">
             <ul class="py-2">
               <li class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-300 dark:hover:bg-gray-800">
                 <div>{{ user.name }}</div>
@@ -97,7 +99,8 @@
         </div>
 
         <!-- Chuyển đổi giữa chế độ sáng và tối -->
-        <button @click="toggleTheme" class="float-left sm:mr-3 w-10 h-10 rounded-full hover:bg-gray-300 dark:hover:bg-gray-800">
+        <button @click="toggleTheme"
+          class="float-left sm:mr-3 w-10 h-10 rounded-full hover:bg-gray-300 dark:hover:bg-gray-800">
           <i v-if="isDarkMode" class="bx bx-sun text-lg sm:text-3xl"></i>
           <i v-else class="bx bx-moon text-lg sm:text-3xl"></i>
         </button>
@@ -120,9 +123,24 @@ export default {
       isVideoMenuOpen: false,
       isAvatarMenuOpen: false,
       user: null, // Dữ liệu người dùng
+      searchQuery: null,
+
+
     };
   },
   methods: {
+    navigateAndReload(event) {
+      // Ngừng hành động mặc định của router-link
+      event.preventDefault();
+
+      // Điều hướng đến /product và reload trang sau khi điều hướng thành công
+      this.$router.push('/product').then(() => {
+        // Reload trang sau khi đã điều hướng
+        window.location.reload();
+      }).catch(error => {
+        console.error('Navigation failed:', error);
+      });
+    },
     toggleTheme() {
       this.isDarkMode = !this.isDarkMode;
       document.documentElement.classList.toggle('dark', this.isDarkMode);
@@ -179,9 +197,15 @@ export default {
         console.error(error);
       }
     },
+    searchVideo() {
+      if (this.searchQuery.trim() != "") {
+        window.location.href = `/search/${this.searchQuery}`
+      }
+    }
   },
   async mounted() {
     this.user = await checkAuthStatus();
+    console.log(this.user)
     document.addEventListener("click", this.closeAllDropdown);
   },
   beforeUnmount() {
@@ -212,10 +236,12 @@ export default {
     height: 2px;
     background-color: black;
   }
+
   .sizelogo {
     width: 100px;
     height: 50px;
   }
+
   .searchsize {
     max-width: 400px;
   }
@@ -228,10 +254,12 @@ export default {
     height: 2px;
     background-color: black;
   }
+
   .sizelogo {
     width: 110px;
     height: 55px;
   }
+
   .searchsize {
     max-width: 428px;
   }
@@ -244,10 +272,12 @@ export default {
     height: 3px;
     background-color: black;
   }
+
   .sizelogo {
     width: 120px;
     height: 60px;
   }
+
   .searchsize {
     max-width: 448px;
   }

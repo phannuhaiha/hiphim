@@ -8,6 +8,7 @@
         </div>
         <p class="text-gray-700 text-center font-medium mb-2">Bấm vào nút tải lên để chọn video bạn muốn đăng </p>
         <p class="text-sm text-gray-500 text-center mb-6">Lưu ý vì lí do kinh phí nên dung lượng tối đa của video là dưới 100MB</p>
+        <p class="text-sm text-gray-500 text-center mb-6">Người dùng PREMIUM sẽ được upload video 200MB</p>
         <input 
           type="file" 
           id="file-input" 

@@ -8,7 +8,7 @@ const users = [
     children: [
       {
         path: '',
-        
+
         redirect: '/product',
       },
       {
@@ -20,6 +20,9 @@ const users = [
         path: 'subscription',
         name: 'subscription',
         component: () => import("../views/users/Subscription.vue"),
+        meta: {
+          requiresAuthUser: true
+        },
       },
       {
         path: 'login',
@@ -44,17 +47,54 @@ const users = [
       },
       {
         path: 'mychannel',
-        name: 'channel',
+        name: 'myChannel',
         component: () => import("../views/users/Channel.vue"),
+        meta: {
+          requiresAuthUser: true
+        },
       },
       {
         path: 'watched',
         name: 'watched',
         component: () => import("../views/users/Watched.vue"),
+        meta: {
+          requiresAuthUser: true
+        },
+      },
+      {
+        path: 'search/:search',
+        name: 'search',
+        component: () => import("../views/users/Search.vue"),
+        props: true,
+      },
+      {
+        path: 'channel-user/:id',
+        name: 'channelUser',
+        component: () => import("../views/users/ChannelUser.vue"),
+        props: true,
+      },
+      
+      {
+        path: 'series-watch/:slug',
+        name: 'SeriesWatch',
+        component: () => import("../views/users/SeriesWatch.vue"),
+        props: true,
+      },
+      //test
+      {
+        path: 'playlistdetail/:slug',
+        name: 'playlistdetail',
+        component: () => import("../views/users/PlaylistDetail.vue"),
+        props: true,
+      },
+      {
+        path: 'seeplaylist',
+        name: 'seeplaylist',
+        component: () => import("../views/users/SeePlaylist.vue"),
       },
 
 
-     
+
     ]
   },
   {
@@ -68,14 +108,14 @@ const users = [
     name: 'registerChannel',
     component: () => import("../views/users/RegisterChannel.vue"),
   },
- 
-  
+
+
   {
     path: '/uploadvideo',
     name: 'upload',
     component: () => import("../views/users/UploadVideo.vue"),
-    meta:{
-      requiresAuth: true
+    meta: {
+      requiresAuthUser: true
     }
   },
   {
@@ -83,10 +123,10 @@ const users = [
     name: 'alert',
     component: () => import("../components/users/Alert.vue"),
   },
-  
 
 
- 
+
+
 ]
 
 export default users;

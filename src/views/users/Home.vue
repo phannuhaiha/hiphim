@@ -11,6 +11,7 @@
     <div class="flex flex-row flex-grow mt-16 transition-all duration-300 dark:bg-gray-800">
       <!-- Menu Drawer (Nav) -->
       <div 
+      :class="{ 'hidden': route.name === 'detail' }"
         class="h-full sm:z-40 sm:w-52 z-[-1]  bg-gray-300 dark:bg-gray-900 transition-all duration-300"
       >
         <Nav  :isDarkMode="isDarkMode" class="dark:bg-gray-800" />
@@ -19,7 +20,7 @@
       <!-- Nội dung chính (được render thông qua RouterView) -->
       <div 
       
-        class="flex-grow w-full max-w-screen bg-white dark:bg-gray-900 py-3  transition-all duration-300"
+        class="flex-grow w-full max-w-screen bg-white dark:bg-gray-900 sm:py-3  transition-all duration-300"
       >
         <RouterView  :isDarkMode="isDarkMode" />
       </div>
@@ -32,6 +33,7 @@
 </template>
 
 <script> 
+import { useRoute } from 'vue-router';
 import { RouterView } from 'vue-router';
 import Header from '@/components/users/Header.vue';
 import Nav from '@/components/users/Nav.vue';
@@ -49,6 +51,10 @@ export default {
       isNavOpen: true,  // Trạng thái mở/đóng của menu Nav
       isDarkMode: false, // Trạng thái chế độ sáng/tối
     };
+  },
+  setup() {
+    const route = useRoute(); // Lấy thông tin route hiện tại
+    return { route };
   },
   methods: {
     toggleNav() {

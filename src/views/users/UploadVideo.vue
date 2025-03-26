@@ -10,23 +10,22 @@
         <ul class="flex flex-col justify-center items-center space-y-4 text-gray-700 dark:text-gray-200">
           <li>
             <div class="flex justify-center">
-              <img v-if="this.user && this.user.avatar" :src="this.user.avatar"
-                alt="Avatar" class="avatar-channel" />
+              <img v-if="this.user && this.user.avatar" :src="this.user.avatar" alt="Avatar" class="avatar-channel" />
               <i v-else class="bx bx-user-circle text-black text-9xl"></i>
             </div>
             <div class="text-center">
-              <h1 v-if="this.user && this.user.name" class="text-2xl text-black font-bold">{{ this.user.name }}</h1>
+              <h1 v-if="this.user && this.user.name" class="text-2xl text-black dark:text-gray-300 font-bold">{{
+                this.user.name }}</h1>
               <h1 v-else class="text-2xl text-black font-bold">Kênh của Bạn</h1>
               <!-- <h1 v-if="this.user && this.user.slug" class="text-xl text-gray-900">@{{ this.user.slug }}</h1> -->
-              
             </div>
           </li>
-          <div class="flex flex-col space-y-3 w-full justify-center items-center">
+          <div class="flex flex-col space-y-3 w-full justify-center items-center dark:text-gray-300">
             <!-- upload -->
             <button class="flex flex-row w-full gap-2 tab-link text-gray-600 hover:text-blue-600 focus:outline-none"
               :class="{ 'text-blue-600 border-blue-600': activeTab === 'upload' }" @click="activeTab = 'upload'">
               <div class="flex pl-1 pt-1 w-[20%] h-full items-center justify-center">
-                <i class="bx bx-upload w-full h-full text-xl text-black"></i>
+                <i class="bx bx-upload w-full h-full text-xl text-black dark:text-gray-300"></i>
               </div>
               <span
                 class="flex w-[80%] items-start justify-start text-black dark:text-white font-roboto text-xl hover:underline">
@@ -34,14 +33,35 @@
               </span>
             </button>
             <!-- thông tin -->
-            <button class="flex flex-row w-full gap-2 tab-link text-gray-600 hover:text-blue-600 focus:outline-none"
+            <!-- <button class="flex flex-row w-full gap-2 tab-link text-gray-600 hover:text-[#44689c] focus:outline-none"
               :class="{ 'text-blue-600 border-blue-600': activeTab === 'thongtin' }" @click="activeTab = 'thongtin'">
               <div class="flex pl-1 pt-1 w-[20%] h-full items-center justify-center">
-                <i class="bx bx-pencil w-full h-full text-xl text-black"></i>
+                <i class="bx bx-pencil w-full h-full text-xl text-black dark:text-gray-300"></i>
               </div>
               <span
                 class="flex w-[80%] items-start justify-start text-black dark:text-white font-roboto text-xl hover:underline">
                 Thông tin cá nhân
+              </span>
+            </button> -->
+            <button class="flex flex-row w-full gap-2 tab-link text-gray-600 hover:text-blue-600 focus:outline-none"
+              :class="{ 'text-blue-600 border-blue-600': activeTab === 'playlist' }" @click="activeTab = 'playlist'">
+              <div class="flex pl-1 pt-1 w-[20%] h-full items-center justify-center">
+                <i class="bx bx-file w-full h-full text-xl text-black dark:text-gray-300"></i>
+              </div>
+              <span
+                class="flex w-[80%] items-start justify-start text-black dark:text-white font-roboto text-xl hover:underline">
+                Playlist
+              </span>
+            </button>
+
+            <button :class="{ 'text-blue-600 border-blue-600': activeTab === 'prenium' }" @click="activeTab = 'prenium'"
+              class="flex flex-row w-full gap-2 tab-link text-gray-600 hover:text-blue-600 focus:outline-none">
+              <div class="flex pl-1 pt-1 w-[20%] h-full items-center justify-center">
+                <i class="bx bx-pencil w-full h-full text-xl text-black dark:text-gray-300"></i>
+              </div>
+              <span
+                class="flex w-[80%] items-start justify-start text-black dark:text-white font-roboto text-xl hover:underline">
+                Đăng ký Premium
               </span>
             </button>
           </div>
@@ -53,28 +73,54 @@
         <div v-show="activeTab === 'upload'" class="tab-content w-full">
           <!-- Tiêu đề -->
           <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-bold font-roboto">Danh sách video</h1>
-            <button class="px-4 py-2 bg-blue-600 rounded text-blue hover:underline font-bold focus:outline-none"
+            <h1 class="text-2xl font-bold font-roboto dark:text-gray-300">Danh sách video</h1>
+            <button v-if="user && user.isBlock == 1"
+              class="px-4 py-2 bg-blue-600 rounded text-blue dark:text-[#8babd6] hover:underline font-bold focus:outline-none"
+              @click="showErrorToast(`Tài khoản của bạn bị khóa đến ${user.expired_block}`)">
+              Thêm Video
+            </button>
+            <button v-else
+              class="px-4 py-2 bg-blue-600 rounded text-blue dark:text-[#8babd6] hover:underline font-bold focus:outline-none"
               @click="openModal">
-              Upload Video bấm ở đây nha
+              Thêm Video
             </button>
           </div>
 
           <!-- Bảng danh sách video -->
           <div class="overflow-x-auto flex flex-col items-center w-full justify-center space-y-5 shadow-xl p-6">
             <TableListVideo v-if="listVideo && listVideo.length > 0" :videos="listVideo" />
-              <p v-else>Không có video nào trong danh sách.</p>
+            <p v-else>Không có video nào trong danh sách.</p>
           </div>
         </div>
-        <div v-show="activeTab === 'thongtin'" class="w-full p-3">
+        <!-- <div v-show="activeTab === 'thongtin'" class="w-full p-3">
           <div class="flex items-center">
             <h1 class="text-2xl font-bold font-roboto">Chỉnh sửa thông tin cá nhân</h1>
           </div>
           <div class="overflow-x-auto flex flex-col items-center w-full justify-center space-y-5 shadow-xl p-6">
-           <Individual/>
+            <Individual />
           </div>
 
+        </div> -->
+
+        <div v-show="activeTab === 'prenium'" class="w-full p-3">
+          <div class="flex items-center">
+            <h1 class="text-2xl font-bold font-roboto">Thông tin gói Prenium</h1>
+          </div>
+          <div class="overflow-x-auto flex flex-col items-center w-full justify-center space-y-5 shadow-xl p-6">
+            <Prenium />
+          </div>
         </div>
+
+        <div v-show="activeTab === 'playlist'" class="w-full p-3">
+          <div class="flex items-center">
+            <h1 class="text-2xl font-bold font-roboto">Danh sách playlist</h1>
+          </div>
+          <div class="overflow-x-auto flex flex-col items-center w-full justify-center space-y-5 shadow-xl p-6">
+            <Tableplaylist />
+          </div>
+        </div>
+
+
       </div>
     </div>
 
@@ -115,17 +161,15 @@
 
             <!-- Hiển thị thông tin video -->
             <div class="border rounded-lg p-4 bg-gray-50 dark:bg-gray-700 ">
-
-
               <p><strong>Tiêu đề:</strong> {{ videoTitle }}</p>
-             
               <p><strong>Mô tả:</strong> {{ videoDescription || 'Chưa có mô tả' }}</p>
             </div>
+
             <div class="mt-4">
               <p><strong>Video chạy thử:</strong></p>
               <video controls class="w-full max-w-md mx-auto rounded-lg shadow-md" :src="videoPreviewUrl"></video>
             </div>
-            <!-- CHỗ tiến nạp dữ liệu nnè  -->
+            <!-- Chỗ tiến nạp dữ liệu nnè -->
             <div class="relative w-full mt-4">
               <button @click="handleSubmitForm">
                 ĐĂNG
@@ -179,6 +223,8 @@ import { toast } from 'vue3-toastify';
 import csrf from '@/config/csrf';
 import router from '@/router';
 import { checkAuthStatus } from '@/config/auth';
+import Tableplaylist from '@/components/users/Playlist/Tableplaylist.vue';
+import Prenium from '@/components/users/Prenium.vue';
 
 export default {
   name: 'UploadPage',
@@ -189,7 +235,8 @@ export default {
     TableListVideo,
     ToastComponent,
     Individual,
-    
+    Tableplaylist,
+    Prenium,
   },
   data() {
     return {
@@ -234,34 +281,43 @@ export default {
       this.resetWizard();
     },
     handleFileSelected(file) {
-  if (file) {
-    // Kiểm tra kích thước file (100MB)
-    if (file.size > 100 * 1024 * 1024) {
-      this.showErrorToast("Tệp của bạn vượt quá dung lượng cho phép (100MB).");
-      this.resetCurrentStep(); // Reset step nếu gặp lỗi
-      return; // Không thực hiện các thao tác tiếp theo
-    }
+      if (file) {
+        if (this.user.premium == 1) {
+          if (file.size > 100 * 1024 * 1024) {
+            this.showErrorToast("Tệp của bạn vượt quá dung lượng cho phép (100MB).");
+            this.resetCurrentStep(); // Reset step nếu gặp lỗi
+            return; // Không thực hiện các thao tác tiếp theo
+          }
+        }
+        // Kiểm tra kích thước file (100MB)
+        if (this.user.premium == 0) {
+          if (file.size > 50 * 1024 * 1024) {
+            this.showErrorToast("Tệp của bạn vượt quá dung lượng cho phép (50MB).");
+            this.resetCurrentStep(); // Reset step nếu gặp lỗi
+            return; // Không thực hiện các thao tác tiếp theo
+          }
+        }
 
-    // Kiểm tra định dạng file (chỉ cho phép MP4)
-    if (file.type !== "video/mp4") {
-      this.showErrorToast("Chỉ cho phép upload tệp định dạng MP4.");
-      this.resetCurrentStep(); // Reset step nếu gặp lỗi
-      return; // Không thực hiện các thao tác tiếp theo
-    }
+        // Kiểm tra định dạng file (chỉ cho phép MP4)
+        if (file.type !== "video/mp4") {
+          this.showErrorToast("Chỉ cho phép upload tệp định dạng MP4.");
+          this.resetCurrentStep(); // Reset step nếu gặp lỗi
+          return; // Không thực hiện các thao tác tiếp theo
+        }
 
-    // Xử lý file hợp lệ
-    this.videoPreviewUrl = URL.createObjectURL(file);
-    this.videoDetails = {
-      name: file.name,
-      size: file.size,
-      type: file.type,
-      file: file,
-    };
+        // Xử lý file hợp lệ
+        this.videoPreviewUrl = URL.createObjectURL(file);
+        this.videoDetails = {
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          file: file,
+        };
 
-    // Chuyển sang bước tiếp theo
-    this.nextStep();
-  }
-},
+        // Chuyển sang bước tiếp theo
+        this.nextStep();
+      }
+    },
 
     nextStep() {
       if (this.currentStep < this.steps.length - 1) {
@@ -285,29 +341,29 @@ export default {
     },
     handleNext() {
 
-      alert('Chưa nghĩ ra cách làm hihi');
+      alert('Bấm vào "Đăng" dưới video demo để đăng video ');
     },
     // giả vờ upload để troll
     handleThumbnailSelected(file) {
-   
+
       this.videoThumbnailUrl = URL.createObjectURL(file); // Lưu URL để hiển thị
       this.videoDetails.thumbnailFile = file; // Lưu file gốc
     },
     // thông báo trả lỗi nè nha
     showErrorToast(message) {
-        toast.error(`${message}`, {
-          autoClose: 4000,
-          position: 'top-right',
-        });
-      },
+      toast.error(`${message}`, {
+        autoClose: 4000,
+        position: 'top-right',
+      });
+    },
     // toast
     showWarningToast() {
-        toast.warning('Vui lòng chờ xíu khi nào up xong hệ thống sẽ tự động đưa bạn về trang chủ', {
-          autoClose: 4000,
-          position: 'top-right',
-          
-        });
-      },
+      toast.warning('Vui lòng chờ xíu khi nào up xong hệ thống sẽ tự động đưa bạn về trang chủ', {
+        autoClose: 4000,
+        position: 'top-right',
+
+      });
+    },
     //end 
     async handleSubmitForm() {
       const token = csrf.getCookie()
@@ -335,11 +391,11 @@ export default {
         console.log(error)
       }
     },
-    async getListVideos(){
+    async getListVideos() {
       try {
         const token = csrf.getCookie()
-        const response = await axios.get('video/get-video-user',{
-          headers:{
+        const response = await axios.get('video/get-video-user-all', {
+          headers: {
             "Authorization": `Bearer ${token}`
           }
         })
@@ -347,9 +403,22 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    async registerPremium() {
+      try {
+        const response = await axios.post('create-payment-link')
+        if (response.checkoutUrl) {
+          window.location.href = response.checkoutUrl
+        } else {
+          console.error("Không nhận được URL thanh toán từ API.");
+        }
+      } catch (error) {
+        console.log(error)
+      }
     }
+
   },
-  async mounted(){
+  async mounted() {
     this.user = await checkAuthStatus()
     this.listVideo = await this.getListVideos()
   }

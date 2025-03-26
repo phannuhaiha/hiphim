@@ -1,4 +1,4 @@
-import Cookies from "js-cookie"
+// import Cookies from "js-cookie"
 
 export default{
     getCookie(){
@@ -6,5 +6,11 @@ export default{
     },
     removeCookie(){
         localStorage.removeItem('token')
+    },
+    getCookieAdmin(){
+        return localStorage.getItem('tokenadmin')
+    },
+    removeCookieAdmin(){
+        localStorage.removeItem('tokenadmin')
     }
 }
