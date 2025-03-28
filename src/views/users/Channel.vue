@@ -30,7 +30,7 @@
 
           </button>
 
-          <!--đăng ký  -->
+          <!-- chỉnh sửa kênh  -->
           <button
           @click="handleEditChannel"
             class="flex sm:w-[20%] w-[55%] rounded-full bg-[#ee4242] flex-row text-white font-semibold px-2 py-1 gap-2 justify-center items-center">
@@ -89,7 +89,8 @@
           </divunderline>
 
           <!-- PLAYLIST -->
-          <div v-show="activeTab === 'Playlist'" v-for="(playlist, index) in channel.playlists" :key="index"
+          <div 
+          v-show="activeTab === 'Playlist'" v-for="(playlist, index) in channel.playlists" :key="index"
             class="flex flex-col gap-2 overflow-hidden  relative">
 
             <div class="flex justify-center w-full h-36">
@@ -104,8 +105,10 @@
             <div class="flex flex-col gap-1 w-full pl-2">
               <h3 class="font-bold text-base overflow-hidden text-ellipsis line-clamp-2 ">{{ playlist.title }}</h3>
               <p class="text-sm text-gray-400">{{ playlist.status == 'public' ? 'Công khai' : 'Riêng tư' }}</p>
-              <a :href="`/playlistdetail/${playlist.id}`" class="text-[#3b81d0] text-sm cursor-pointer">View full
-                playlist</a>
+              <a :href="windowWidth > 640 ? `/playlistdetail/${playlist.id}` : '#'" 
+                class="text-[#3b81d0] text-sm cursor-pointer"
+                @click.prevent="handlePlaylistClick(playlist.id)">
+                View full playlist</a>
             </div>
           </div>
         </div>
@@ -151,6 +154,13 @@ export default {
       alert("Chỉ được sử dụng khi dùng máy tính");
     } else {
       this.$router.push("/uploadvideo"); // Điều hướng khi dùng máy tính
+    }
+  },
+  handlePlaylistClick(playlistId) {
+    if (window.innerWidth > 640) {
+      window.location.href = `/playlistdetail/${playlistId}`;
+    } else {
+      alert("Chỉ trình xem trên máy tính");
     }
   },
 
